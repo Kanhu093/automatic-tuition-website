@@ -1,28 +1,27 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>Student Profile</title>
-</head>
 <body>
 
 <h2>Student Profile</h2>
 
 <div id="profile"></div>
 
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+<script src="firebase-config.js"></script>
+
 <script>
 
-let students=
-JSON.parse(localStorage.getItem("students")) || [];
+let roll = localStorage.getItem("roll");
 
-let roll=
-localStorage.getItem("roll");
+db.collection("students").doc(roll).get().then(doc=>{
 
-let s=
-students.find(x=>x.roll==roll);
+if(doc.exists){
 
-if(s){
+let s = doc.data();
 
-profile.innerHTML=`
+document.getElementById("profile").innerHTML=`
 
 <img src="${s.photo}" width="150"><br>
 
@@ -39,9 +38,11 @@ Marks: ${s.marks}
 }
 else{
 
-profile.innerHTML="Student not found";
+document.getElementById("profile").innerHTML="No profile found";
 
 }
+
+});
 
 </script>
 
