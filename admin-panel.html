@@ -2,11 +2,6 @@
 <html>
 <head>
 <title>Admin Panel</title>
-<style>
-body{font-family:Arial;text-align:center;}
-input,button{padding:10px;margin:5px;}
-.card{border:1px solid gray;padding:10px;margin:10px;}
-</style>
 </head>
 <body>
 
@@ -16,71 +11,50 @@ input,button{padding:10px;margin:5px;}
 <input id="name" placeholder="Name"><br>
 <input id="class" placeholder="Class"><br>
 <input id="marks" placeholder="Marks"><br>
-<input id="photo" placeholder="Photo URL"><br>
+<input type="file" id="photo"><br><br>
 
-<button onclick="add()">Add Student</button>
+<button onclick="addStudent()">Add Student</button>
 
-<h2>Student List</h2>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 
-<div id="list"></div>
+<script src="firebase-config.js"></script>
 
 <script>
 
-let students =
-JSON.parse(localStorage.getItem("students")) || [];
+function addStudent(){
 
-function add(){
+let roll = document.getElementById("roll").value;
+let name = document.getElementById("name").value;
+let studentClass = document.getElementById("class").value;
+let marks = document.getElementById("marks").value;
 
-let s={
-roll:roll.value,
-name:name.value,
-class:class.value,
-marks:marks.value,
-photo:photo.value
-};
+let file = document.getElementById("photo").files[0];
 
-students.push(s);
+let storageRef = storage.ref("students/"+roll);
 
-localStorage.setItem(
-"students",
-JSON.stringify(students)
-);
+storageRef.put(file).then(()=>{
 
-show();
+storageRef.getDownloadURL().then(url=>{
 
-alert("Student Added");
+db.collection("students").doc(roll).set({
 
-}
+roll: roll,
+name: name,
+class: studentClass,
+marks: marks,
+photo: url
 
-function show(){
+});
 
-list.innerHTML="";
+alert("Student added successfully");
 
-students.forEach(s=>{
-
-list.innerHTML+=`
-
-<div class="card">
-
-<img src="${s.photo}" width="100"><br>
-
-Name: ${s.name}<br>
-
-Roll: ${s.roll}<br>
-
-Class: ${s.class}<br>
-
-Marks: ${s.marks}
-
-</div>
-
-`;
+});
 
 });
 
 }
-
-show();
 
 </script>
 
