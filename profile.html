@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Student Profile</title>
+</head>
+<body>
+
+<h2>Student Profile</h2>
+
+<div id="profile"></div>
+
+<script>
+
+let students=
+JSON.parse(localStorage.getItem("students")) || [];
+
+let roll=
+localStorage.getItem("roll");
+
+let s=
+students.find(x=>x.roll==roll);
+
+if(s){
+
+profile.innerHTML=`
+
+<img src="${s.photo}" width="150"><br>
+
+Name: ${s.name}<br>
+
+Roll: ${s.roll}<br>
+
+Class: ${s.class}<br>
+
+Marks: ${s.marks}
+
+`;
+
+}
+else{
+
+profile.innerHTML="Student not found";
+
+}
+
+</script>
+
+</body>
+</html>
