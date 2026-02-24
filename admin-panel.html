@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Panel</title>
+<style>
+body{font-family:Arial;text-align:center;}
+input,button{padding:10px;margin:5px;}
+.card{border:1px solid gray;padding:10px;margin:10px;}
+</style>
+</head>
+<body>
+
+<h2>Add Student</h2>
+
+<input id="roll" placeholder="Roll Number"><br>
+<input id="name" placeholder="Name"><br>
+<input id="class" placeholder="Class"><br>
+<input id="marks" placeholder="Marks"><br>
+<input id="photo" placeholder="Photo URL"><br>
+
+<button onclick="add()">Add Student</button>
+
+<h2>Student List</h2>
+
+<div id="list"></div>
+
+<script>
+
+let students =
+JSON.parse(localStorage.getItem("students")) || [];
+
+function add(){
+
+let s={
+roll:roll.value,
+name:name.value,
+class:class.value,
+marks:marks.value,
+photo:photo.value
+};
+
+students.push(s);
+
+localStorage.setItem(
+"students",
+JSON.stringify(students)
+);
+
+show();
+
+alert("Student Added");
+
+}
+
+function show(){
+
+list.innerHTML="";
+
+students.forEach(s=>{
+
+list.innerHTML+=`
+
+<div class="card">
+
+<img src="${s.photo}" width="100"><br>
+
+Name: ${s.name}<br>
+
+Roll: ${s.roll}<br>
+
+Class: ${s.class}<br>
+
+Marks: ${s.marks}
+
+</div>
+
+`;
+
+});
+
+}
+
+show();
+
+</script>
+
+</body>
+</html>
